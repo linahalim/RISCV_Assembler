@@ -66,7 +66,7 @@ def assemble(instruction):
     
     #full binary instruction for R-type
         binary_instruction = funct7_binary + rs2_binary + rs1_binary + funct3_binary + rd_binary + opcode_binary
-        
+        return bin_to_hex(binary_instruction)
 
     elif opcode in I_type_opcodes:
         opcode_binary = I_type_opcodes[opcode]["opcode"]
@@ -77,7 +77,7 @@ def assemble(instruction):
     
     #full binary instruction for I-type
         binary_instruction = immediate + rs1_binary + funct3_binary + rd_binary + opcode_binary
-    
+        return bin_to_hex(binary_instruction)
     elif opcode in B_type_opcodes:
         # Branch instructions
         if parts[0] in ["BEQ", "BNE"]:
