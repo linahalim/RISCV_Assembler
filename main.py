@@ -49,14 +49,26 @@ def dec_to_bin(n, length):
 def bin_to_hex(binary_string):
     hex_string = hex(int(binary_string, 2))[2:].zfill(len(binary_string) // 4)
     return hex_string
+   
+# function to change register name to binary 
+def register_name_to_binary(name):
+    register_number = register_mapping.get(name)
+    if register_number is None:
+        raise ValueError(f"Unknown register name: {name}")
+    binary_representation = format(register_number, '05b')
+    return binary_representation
+
 
 # Assemble function
 def assemble(instruction):
+    instruction = instruction.replace(',', '') #remove commas
     parts = instruction.split()
-    opcode = OPCODES.get(parts[0], None)
+    parts = [part.strip() for part in parts] #remove extra spaces idk if we need 
+    opcode = parts[0] #for all types the first is opcode
 
     
     if opcode in R_type_opcodes:
+       # R type instructions
         opcode_binary = R_type_opcodes[opcode]["opcode"]
         rd_binary = register_name_to_binary(parts[1])
         rs1_binary = register_name_to_binary(parts[2])
@@ -69,15 +81,16 @@ def assemble(instruction):
         return bin_to_hex(binary_instruction)
 
     elif opcode in I_type_opcodes:
+       # immediate instructions
         opcode_binary = I_type_opcodes[opcode]["opcode"]
         rd_binary = register_name_to_binary(parts[1])
         rs1_binary = register_name_to_binary(parts[2])
         immediate = format(int(parts[3]), '012b')  # assuming the immediate value fits in 12 bits
         funct3_binary = I_type_opcodes[opcode]["funct3"]
-    
-    #full binary instruction for I-type
+        #full binary instruction for I-type
         binary_instruction = immediate + rs1_binary + funct3_binary + rd_binary + opcode_binary
         return bin_to_hex(binary_instruction)
+       
     elif opcode in B_type_opcodes:
         # Branch instructions
         if parts[0] in ["BEQ", "BNE"]:
@@ -89,11 +102,22 @@ def assemble(instruction):
         else:
             print("Unsupported instruction:", opcode)
         return None
-    
-    
+       
+   def assemble_file(input_file, output_file):
+        with open(input_file, 'r') as f, open(output_file, 'w') as of:
+            for line in f:
+                hex_instruction = assemble_instruction(line.strip())
+                if hex_instruction:
+                    of.write(hex_instruction + '\n')
+
     
 instruction = "BEQ x1, x2, 4"
 machine_code = assemble(instruction)
 print("Instruction:", instruction)
 # Expected output: 0x00208463
+print("Generated machine code:", machine_code)
+instruction1 = "ADD x1, x2, x1"
+machine_code = assemble(instruction1)
+print("Instruction:", instruction1)
+# Expected output: 001100b3
 print("Generated machine code:", machine_code)
