@@ -1,7 +1,9 @@
 
 # Sydney Aronson and Lina Halim collaborated together
-# We met up and bounced ideas off of each other. Lina did  the assemble_file method which turned the file into the instructions 
-# Lina also did the hex/binary/decimal conversion methods 
+# We met up and bounced ideas off of each other. 
+# Lina did the assemble_file method which turned the file into the instructions.
+# Lina did the hex/binary/decimal conversion methods.
+# Lina implemented the ignore comments method and made the opcode case insensitive.
 # Sydney made the dictionaries that had the different opcodes, register mapping, and register to binary function. 
 # Sydney also handled parsing the lines of the files, and doing the R type and I type decoding
 # Together, Lina and Sydney worked on the branching part 
@@ -92,7 +94,7 @@ def assemble(instruction: str):
     instruction = instruction.replace(',', '') #remove commas
     parts = instruction.split()
     parts = [part.strip() for part in parts] #remove extra spaces idk if we need
-    opcode = parts[0] #for all types the first is opcode
+    opcode = parts[0].upper() #for all types the first is opcode
 
     if opcode in R_type_opcodes:
        # R type instructions
