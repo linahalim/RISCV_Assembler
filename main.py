@@ -1,3 +1,11 @@
+
+# Sydney Aronson and Lina Halim collaborated together
+# We met up and bounced ideas off of each other. Lina did  the assemble_file method which turned the file into the instructions 
+$ Lina also did the hex/binary/decimal conversion methods 
+# Sydney made the dictionaries that had the different opcodes, register mapping, and register to binary function. 
+# Sydney also handled parsing the lines of the files, and doing the R type and I type decoding
+# Together, Lina and Sydney worked on the branching part 
+
 #global vars
 R_type_opcodes = {
      "ADD": {"opcode": "0110011", "funct3": "000", "funct7": "0000000"},
@@ -21,7 +29,6 @@ B_type_opcodes = {
     "BNE": {"opcode": "1100011", "funct3": "001"},
 }
 
-#NOT DONE
 register_mapping = {
     "zero": 0, "x0": 0,
     "ra": 1, "x1": 1,
