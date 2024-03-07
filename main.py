@@ -39,8 +39,7 @@ register_mapping = {
     "t0": 5, "x5": 5,
     "t1": 6, "x6":6,
     "t2": 7, "x7":7,
-    "s0": 8, "fp":8,
-    "x8":8,
+    "s0": 8, "fp":8, "x8":8,
     "s1": 9, "x9": 9,
     "a0": 10, "x10": 10,
     "a1": 11, "x11": 11,
@@ -95,7 +94,6 @@ def assemble(instruction: str):
     parts = [part.strip() for part in parts] #remove extra spaces idk if we need
     opcode = parts[0] #for all types the first is opcode
 
-   
     if opcode in R_type_opcodes:
        # R type instructions
         opcode_binary = R_type_opcodes[opcode]["opcode"]
@@ -129,22 +127,26 @@ def assemble(instruction: str):
         rs2_binary = register_name_to_binary(parts[2])
         imm = (dec_to_bin(int(parts[3]), 13))
         imm_rev = imm[slice(None, None,-1)]
-       
         machine_code_binary = imm_rev[12] + imm_rev[4:10] +rs2_binary + rs1_binary + funct3_binary + imm_rev[0:4] + imm_rev[11]+ opcode_binary
         return bin_to_hex(machine_code_binary)
     else:
         print("Unsupported instruction:", opcode)
         return None
-       
+
+def ignore_comments(line: str) -> str:
+    if "#" in line:
+        instruction = line.split("#")[0]
+    else: return line
+    return instruction
+
 def assemble_file(input_file, output_file):
     input = open(input_file, 'r')
     output = open(output_file, 'w')
     for line in input:
-        if ":" not in line:
-            instruction = ignore_comments(line)
-            print(instruction)
-            hex_instruction = str(assemble(instruction))
-            output.write(hex_instruction + "\n")
+        instruction = ignore_comments(line)
+        hex_instruction = str(assemble(instruction))
+        output.write(hex_instruction + "\n")
+            
             
 
 #########################################################################
