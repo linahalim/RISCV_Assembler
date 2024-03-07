@@ -122,7 +122,7 @@ def assemble(instruction):
         rs1_binary = register_name_to_binary(parts[1])
         rs2_binary = register_name_to_binary(parts[2])
         imm = (dec_to_bin(int(parts[3]), 13))
-       
+        imm_rev = imm[slice(None, None,-1)]
         machine_code_binary = imm_rev[12] + imm_rev[4:10] +rs2_binary + rs1_binary + funct3_binary + imm_rev[0:4] + imm_rev[11]+ opcode_binary
         return bin_to_hex(machine_code_binary)
     else:
